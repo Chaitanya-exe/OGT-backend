@@ -4,8 +4,8 @@ This is the code for the OGT backend api, which has been worked upon for a while
 ## Models
 There are models or schemas for the data neccessary like user details, project details, conversation, authentication etc...
 
-##Routes 
+## Routes 
 Routes for the various endpoints to request and recieve the data from the api.
 
-##controllers 
+## controllers 
 The main operations on the data is done through the controllers, they are just basically functions which will take user request as an argument and perform some operation and send back the reesponse to the user.
