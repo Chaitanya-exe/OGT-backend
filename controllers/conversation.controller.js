@@ -2,7 +2,7 @@ import Conversation from "../models/conversation.model.js";
 
 export const createConversation = async (req, res) =>{
     try{
-        const temp = await Conversation.findOne({id:{$eq:`${req.body.devId}_${req.body.empId}`}});
+        const temp = await Conversation.findOne({id:{$eq:`${req.body.empId}_${req.body.devId}`}});
         if(temp){
             return res.status(400).json({error: "conversation already exists"});
         }
