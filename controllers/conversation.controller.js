@@ -8,7 +8,7 @@ export const createConversation = async (req, res) =>{
         }
         else{
             const newConv = new Conversation({
-                id: `${req.body.devId}_${req.body.empId}`,
+                id: `${req.body.empId}_${req.body.devId}`,
                 devId: req.body.devId,
                 empId: req.body.empId
             });
