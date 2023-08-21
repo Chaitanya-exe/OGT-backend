@@ -2,15 +2,15 @@ import Conversation from "../models/conversation.model.js";
 
 export const createConversation = async (req, res) =>{
     try{
-        const temp = await Conversation.findOne({id:{$eq:`${req.body.empId}_${req.body.devId}`}});
+        const temp = await Conversation.findOne({room:{$eq:`${req.body.empUsername}_${req.body.devUsername}`}});
         if(temp){
             return res.status(400).json({error: "conversation already exists"});
         }
         else{
             const newConv = new Conversation({
-                id: `${req.body.empId}_${req.body.devId}`,
-                devId: req.body.devId,
-                empId: req.body.empId
+                room: `${req.body.empUsername}_${req.body.devUsername}`,
+                devId: req.body.devUsername,
+                empId: req.body.empUsername
             });
             await newConv.save();
             res.status(201).send("conversation created!!!");
@@ -23,7 +23,7 @@ export const createConversation = async (req, res) =>{
 
 export const getConversation = async (req, res)=>{
     try{
-        const oneConv = await Conversation.findOne({id:{$eq: req.params.id}});
+        const oneConv = await Conversation.findOne({room:{$eq: req.params.id}});
         if(oneConv){
             return res.status(200).send(oneConv);
         }

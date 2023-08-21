@@ -6,11 +6,11 @@ const MessageSchema = new Schema({
     type: String,
     required: true,
   },
-  userId: {
+  sentBy: {
     type: String,
     required: true,
   },
-  desc: {
+  message: {
     type: String,
     required: true,
   },

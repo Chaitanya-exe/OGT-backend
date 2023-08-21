@@ -26,30 +26,30 @@ export const createReview = async (req, res) => {
             $inc:{totalRating:req.body.star , numRating: 1, avgRating:(totalRating/numRating)}
         })
 
-        res.status(200).json({newReview});
+        return res.status(200).json({newReview});
 
     }   
     catch (err) {
-        res.status(400).json({messgae: err});
+        return res.status(400).json({messgae: err});
     }
 };
 
 export const getReviews = async (req, res) => {
     try {
         const reviews = await Reviews.find({devId:{$eq: req.params.id}});
-        res.status(200).send(reviews);
+        return res.status(200).send(reviews);
     } 
     catch (err) {
-        res.status(400).json({error : err});
+        return res.status(400).json({error : err});
     }
 }
 
 export const deleteReview = async (req, res, next) => {
     try {
         await Reviews.findOneAndDelete({userId: req.id, devId: req.body.id});
-        res.status(200).send({message: "Review deleted successfully"});
+        return res.status(200).send({message: "Review deleted successfully"});
     } 
     catch (err) {
-        res.status(400).json({error: err});
+        return res.status(400).json({error: err});
     }
 };

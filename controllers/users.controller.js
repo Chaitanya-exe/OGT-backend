@@ -39,28 +39,28 @@ export const login = async (req, res)=>{
                     },
                     process.env.JWT_KEY
                     ,{expiresIn:'10h'});
-                res.status(200).json({token, info});
+                return res.status(200).json({token, info});
             }
             else{
-                res.status(403).json({error:"wrong username or password"});
+                return res.status(403).json({error:"wrong username or password"});
             }
         }
         else{
-            res.status(404).json({error:`user not found`});
+            return res.status(404).json({error:`user not found`});
         }
     }
     catch(err){
-        res.status(403).json({error:`${err}`});
+        return res.status(403).json({error:`${err}`});
     }
 }
 
 export const deleteUser = async (req, res)=>{
     try{
         await Users.findOneAndDelete({username: req.body.username})
-        res.status(201).json({message:`user deleted successfully`});
+        return res.status(201).json({message:`user deleted successfully`});
     }
     catch(err){
-        res.status(400).json({error:`${err}`});
+        return res.status(400).json({error:`${err}`});
     }
 }
 
@@ -79,10 +79,10 @@ export const updateUser = async (req, res)=>{
 
         const {password, ...info} = user._doc;
 
-        res.status(200).json({message:"user updated", info});
+        return res.status(200).json({message:"user updated", info});
     }
     catch(err){
-        res.status(403).json({error:`${err}`});
+        return res.status(403).json({error:`${err}`});
     }
 }
 
@@ -98,7 +98,7 @@ export const getAllUsers = async (req, res)=>{
         }
     }
     catch(err){
-        res.status(404).json({error:`${err}`});
+        return res.status(404).json({error:`${err}`});
     }
 }
 
@@ -107,13 +107,13 @@ export const getOneUser = async (req, res)=>{
         const a_user = await Users.findOne({_id:req.params.id})
         if(a_user){
             const {password, ...info} = a_user._doc
-            res.status(200).send(info);
+            return res.status(200).send(info);
         }
         else{
-            res.status(404).json({error:"requested profile not found"});
+            return res.status(404).json({error:"requested profile not found"});
         }
     }
     catch(err){
-        res.status(400).send({error:`${err}`});
+        return res.status(400).send({error:`${err}`});
     }
 }

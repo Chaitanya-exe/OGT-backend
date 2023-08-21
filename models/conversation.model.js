@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const ConversationSchema = new Schema(
   {
-    id: {
+    room: {
       type: String,
       required: true,
       unique: true,
