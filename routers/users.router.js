@@ -8,7 +8,7 @@ router.post("/register",register);
 router.post("/login",login);
 router.delete("/delete/:id",verifyToken, deleteUser);
 router.get("/getUser/:id",verifyToken,getOneUser);
-router.get("/getAllUsers",verifyToken, getAllUsers);
+router.get("/getUsers",verifyToken, getAllUsers);
 router.post("/updateUser/:id",verifyToken, updateUser);
 
 export default router;

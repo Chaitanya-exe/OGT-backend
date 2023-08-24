@@ -11,12 +11,10 @@ const ConversationSchema = new Schema(
     devId:{
         type:String,
         required:true,
-        unique:true
     },
     empId:{
         type:String,
-        required:true,
-        unique:true
+        required:true
     }
   },
   {
