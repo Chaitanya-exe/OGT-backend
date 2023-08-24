@@ -20,6 +20,7 @@ const dbConnect = async () =>{
         console.log(`There was an error ${err}`);
     }
 }
+
 await dbConnect();
 
 app.use((req, res, next)=>{
