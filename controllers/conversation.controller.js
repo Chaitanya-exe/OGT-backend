@@ -1,8 +1,5 @@
 import Conversation from "../models/conversation.model.js";
-import app from "../server.js"
-import { Socket } from "socket.io";
-
-const io = Socket(app);
+import io from "../server.js";
 
 export const createConversation = async (req, res) =>{
     try{
@@ -11,9 +8,6 @@ export const createConversation = async (req, res) =>{
             return res.status(400).json({error: "conversation already exists"});
         }
         else{
-            io.on('connection',(socket)=>{
-                socket.emit('message',"You are now connected");
-            })
             const newConv = new Conversation({
                 room: `${req.body.empUsername}_${req.body.devUsername}`,
                 devId: req.body.devUsername,
