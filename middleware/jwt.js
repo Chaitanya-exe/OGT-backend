@@ -4,7 +4,7 @@ export const verifyToken = (req, res, next) => {
     try{
         const token = req.header('Authorization').split(" ")[1];
         if(!token){
-            return res.status(401).send("you are not logged in");
+            return res.status(401).send({error: `not logged in`});
         }
 
         jwt.verify(token, process.env.JWT_KEY, (err, payload) => {

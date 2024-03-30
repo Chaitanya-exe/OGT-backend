@@ -6,7 +6,7 @@ export const register = async (req, res) => {
     try {
         const temp = await Users.findOne({username: req.body.username});
         if(temp){
-            res.status(400).send(`The username is already taken`);
+            res.status(400).send({err:`username already taken`});
         }
         else{
             const hash = bcrypt.hashSync(req.body.password, 5);
@@ -110,7 +110,7 @@ export const getOneUser = async (req, res)=>{
             return res.status(200).send(info);
         }
         else{
-            return res.status(404).json({error:"requested profile not found"});
+            return res.status(404).json({error:"profile not found"});
         }
     }
     catch(err){

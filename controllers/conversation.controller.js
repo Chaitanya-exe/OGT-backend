@@ -1,5 +1,4 @@
 import Conversation from "../models/conversation.model.js";
-import io from "../server.js";
 
 export const createConversation = async (req, res) =>{
     try{
