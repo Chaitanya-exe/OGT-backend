@@ -14,7 +14,7 @@ export const createConversation = async (req, res) =>{
             });
 
             await newConv.save();
-            res.status(201).send("conversation created!!!");
+            return res.status(201).send("conversation created!!!");
         }  
     }
     catch(err){
