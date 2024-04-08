@@ -6,7 +6,7 @@ export const register = async (req, res) => {
     try {
         const temp = await Users.findOne({username: req.body.username});
         if(temp){
-            res.status(400).send({err:`username already taken`});
+            res.status(409).send({err:`username already taken`});
         }
         else{
             const hash = bcrypt.hashSync(req.body.password, 5);
@@ -16,11 +16,12 @@ export const register = async (req, res) => {
             })
         
             await newUser.save();
-            res.status(201).send("User created");
+            const {password, ...resUser} = newUser
+            res.status(201).send({msg:"User created", user: resUser});
         }
     } 
     catch(err){
-        res.status(400).json({error:`${err}`});
+        res.status(400).json({error:`some_error`});
     }
 }
 
@@ -33,9 +34,12 @@ export const login = async (req, res)=>{
                 const {password, ...info} = user._doc;
                 const token = jwt.sign(
                     {
-                      id: user._doc._id,
-                      username: user._doc.username,
-                      isEmployer: user._doc.isEmployer
+                      id: info._id,
+                      username: info.username,
+                      isEmployer: info.isEmployer,
+                      country: info.country,
+                      phNumber: info.phNumber,
+                      email: info.email
                     },
                     process.env.JWT_KEY
                     ,{expiresIn:'10h'});
@@ -46,7 +50,7 @@ export const login = async (req, res)=>{
             }
         }
         else{
-            return res.status(404).json({error:`user not found`});
+            return res.status(404).json({error:`not Signed In`});
         }
     }
     catch(err){
@@ -77,7 +81,7 @@ export const updateUser = async (req, res)=>{
             new:true
         });
 
-        const {password, ...info} = user._doc;
+        const {password, ...info} = info;
 
         return res.status(200).json({message:"user updated", info});
     }
