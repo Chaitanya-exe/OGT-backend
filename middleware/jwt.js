@@ -9,7 +9,7 @@ export const verifyToken = (req, res, next) => {
 
         jwt.verify(token, process.env.JWT_KEY, (err, payload) => {
             if (err) {
-                return res.status(403).send({err:"user logged or session expired"});
+                return res.status(403).send({err:"user logged out or session expired"});
             }
             req.id = payload.id;
             req.username = payload.username; 

@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.post("/register",register);
 router.post("/login",login);
-router.delete("/delete/:id",verifyToken, deleteUser);
-router.get("/getUser/:id",verifyToken,getOneUser);
+router.delete("/deleteUser",verifyToken, deleteUser);
+router.get("/getUser/",verifyToken,getOneUser);
 router.get("/getUsers",verifyToken, getAllUsers);
 router.post("/updateUser/:id",verifyToken, updateUser);
 

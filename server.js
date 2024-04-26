@@ -10,32 +10,19 @@ import projectsRouter from "./routers/projects.router.js";
 import reviewsRouter from "./routers/reviews.router.js";
 import conversationRouter from "./routers/conversation.route.js";
 import messagesRouter from "./routers/messages.route.js";
-
 dotenv.config();
-mongoose.set("strictQuery", true);
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server,{
     cors:{
-        origin:"*",
+        origin:"https://originaltertiary.com/",
         methods:"*"
     }
 });
 app.use(cors());
 handleSocket(io);
 
-const dbConnect = async () =>{
-    try{
-        await mongoose.connect(process.env.URI);
-        console.log("Connected to the database.");
-    }
-    catch(err){
-        console.log(`There was an error ${err}`);
-    }
-}
-
-await dbConnect();
 
 app.use((req, res, next)=>{
     console.log(`${req.method} ${req.url}`);
