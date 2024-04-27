@@ -1,5 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
 import http from "http";
 import cors from "cors";
@@ -20,7 +19,10 @@ const io = new Server(server,{
         methods:"*"
     }
 });
-app.use(cors());
+app.use(cors({
+    origin:"*",
+    methods:"*"
+}));
 handleSocket(io);
 
 
@@ -37,6 +39,6 @@ app.use("/api/reviews", reviewsRouter);
 app.use("/api/conversation", conversationRouter);
 app.use("/api/messages", messagesRouter);
 
-server.listen(6000,()=>{
+server.listen(5000,()=>{
     console.log("Server listening on port:5000");
 });
