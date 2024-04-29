@@ -9,6 +9,6 @@ router.post("/login",login);
 router.delete("/deleteUser",verifyToken, deleteUser);
 router.get("/getUser/",verifyToken,getOneUser);
 router.get("/getUsers",verifyToken, getAllUsers);
-router.post("/updateUser/:id",verifyToken, updateUser);
+router.post("/updateUser",verifyToken, updateUser);
 
 export default router;

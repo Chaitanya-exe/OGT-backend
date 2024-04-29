@@ -1,4 +1,3 @@
-import Users from "../models/users.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import pool from "../db.cjs";
@@ -118,26 +117,28 @@ export const deleteUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
 	try {
-		const user = await Users.findOneAndUpdate(
-			{ _id: req.params.id },
-			{
-				username: req.body.username,
-				firstName: req.body.firstName,
-				lastName: req.body.lastName,
-				age: req.body.age,
-				email: req.body.email,
-				country: req.body.country,
-			},
-			{
-				new: true,
+		const values = [req.body.username, req.body.email, req.body.firstName, req.body.lastName, req.body.description, req.body.country, req.body.phNumber, req.body.oldUsername];
+
+		if(req.body.oldUsername === req.username){
+			const userClient = await pool.connect();
+			const dbRes = await userClient.query("SELECT * FROM Users WHERE username=$1",[req.body.username])
+
+			const user = dbRes.rows
+
+			if(user.length > 0){
+				return res.status(409).json({msg:"username not available"});
 			}
-		);
 
-		const { password, ...info } = info;
+			const updatedUser = await userClient.query(`UPDATE Users SET username=$1, email=$2, first_name=$3,last_name=$4, description=$5, country=$6, phNumber=$7 WHERE username=$8 RETURNING *`,values);
+			const {password, created_at, updated_at, id, ...info} = updatedUser.rows[0];
 
-		return res.status(200).json({ message: "user updated", info });
+			return res.status(202).json({msg:"user updated", newUser:info});
+		} else{
+			return res.status(403).json({msg:"This exploit won't work."})
+		}
+
 	} catch (err) {
-		return res.status(403).json({ error: `${err}` });
+		return res.status(500).json({ error: `${err}` });
 	}
 };
 
@@ -165,6 +166,6 @@ export const getOneUser = async (req, res) => {
 			return res.status(404).json({msg:"user not found"})
 		}
 	} catch (err) {
-		return res.status(400).send({ error: `${err}` });
+		return res.status(500).send({ error: `${err}` });
 	}
 };

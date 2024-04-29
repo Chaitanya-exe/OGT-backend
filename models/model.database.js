@@ -20,3 +20,11 @@ export const makeUserTable = async (client)=>{
         console.log(err);
     }
 }
+
+export const makeProjectsTable = async ()=>{
+    try {
+        
+    } catch (err) {
+        console.log(err);
+    }
+}
