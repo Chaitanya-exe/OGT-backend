@@ -4,7 +4,6 @@ import pool from "../db.cjs";
 export const createProjects = async (req, res)=>{
     try{
         const userClient = await pool.connect()
-        console.log(req.username)
         const values = [req.body.title, req.body.description, req.body.category, req.body.company, req.username, req.body.price, req.body.currency, req.body.deliveryTime]
 
         if(req.isEmployer){
@@ -15,11 +14,10 @@ export const createProjects = async (req, res)=>{
                     console.log(err)
                 }
                 else{
-                    console.log(result)
+                    return res.status(201).json({msg:"Project created",project:result.rows[0]})
                 }
             })
-            return res.status(200).json({msg:"request received"})
-            
+            userClient.release();
         }
         else{
             return res.status(403).json({message:'Not an employer'});

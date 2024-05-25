@@ -26,14 +26,14 @@ export const makeProjectsTable = async (client)=>{
         await client.query(`
             CREATE TABLE IF NOT EXISTS Projects(
             project_ID SERIAL PRIMARY KEY,
-            title VARCHAR(255),
+            title VARCHAR(255) NOT NULL,
             description TEXT,
             posted_by VARCHAR(255),
-            category VARCHAR(255),
-            company VARCHAR(255),
-            price DECIMAL,
+            category VARCHAR(255) NOT NULL,
+            company VARCHAR(255) NOT NULL,
+            price DECIMAL NOT NULL,
             currency VARCHAR(10),
-            delivery_time DATE,
+            delivery_time DATE NOT NULL,
             is_completed BOOLEAN DEFAULT FALSE,
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
