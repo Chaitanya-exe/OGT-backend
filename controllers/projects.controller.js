@@ -1,26 +1,32 @@
 import Projects from "../models/projects.model.js";
+import pool from "../db.cjs";
 
 export const createProjects = async (req, res)=>{
     try{
+        const userClient = await pool.connect()
+        console.log(req.username)
+        const values = [req.body.title, req.body.description, req.body.category, req.body.company, req.username, req.body.price, req.body.currency, req.body.deliveryTime]
+
         if(req.isEmployer){
-            const newProject = new Projects({
-                title: req.body.title,
-                desc: req.body.desc,
-                category: req.body.category,
-                price: req.body.price,
-                DeliveryTime: req.body.deliveryTime,
-                postedBy: req.username,
-                projectId: req.id
-            });
-            await newProject.save();
-            res.status(200).json({message: "project created", newProject});
+            const dbRes = userClient.query(`INSERT INTO Projects (
+                title, description, category, company, posted_by, price, currency, delivery_time
+            ) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING * ;`,values,(err, result)=>{
+                if(err){
+                    console.log(err)
+                }
+                else{
+                    console.log(result)
+                }
+            })
+            return res.status(200).json({msg:"request received"})
+            
         }
         else{
-            res.status(403).json({message:'only employers can post a project'});
+            return res.status(403).json({message:'Not an employer'});
         }
     }
     catch(err){
-        res.status(400).json({error: err});
+        res.status(501).json({error: err});
     }
 }
 

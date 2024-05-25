@@ -15,15 +15,30 @@ export const makeUserTable = async (client)=>{
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )`);
-        console.log("table created.");
+        console.log("Users table initialized.");
     } catch(err){
         console.log(err);
     }
 }
 
-export const makeProjectsTable = async ()=>{
+export const makeProjectsTable = async (client)=>{
     try {
-        
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS Projects(
+            project_ID SERIAL PRIMARY KEY,
+            title VARCHAR(255),
+            description TEXT,
+            posted_by VARCHAR(255),
+            category VARCHAR(255),
+            company VARCHAR(255),
+            price DECIMAL,
+            currency VARCHAR(10),
+            delivery_time DATE,
+            is_completed BOOLEAN DEFAULT FALSE,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );`)
+        console.log("Projects table initialized.")
     } catch (err) {
         console.log(err);
     }

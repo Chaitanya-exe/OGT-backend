@@ -8,10 +8,13 @@ const pool = new Pool({
 
 (async ()=>{
     try{
-        const {makeUserTable} = await import("./models/model.database.js")
+        const {makeUserTable, makeProjectsTable} = await import("./models/model.database.js")
         const client = await pool.connect();
         console.log("connected to the database");
         await makeUserTable(client);
+        await makeProjectsTable(client);
+
+        client.release();
     } catch(err){
         console.log(err);
     }
