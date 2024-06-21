@@ -17,11 +17,11 @@ export const createProjects = async (req, res)=>{
                     return res.status(201).json({msg:"Project created",project:result.rows[0]})
                 }
             })
-            userClient.release();
         }
         else{
             return res.status(403).json({message:'Not an employer'});
         }
+        userClient.release();
     }
     catch(err){
         res.status(501).json({error: err});
@@ -30,13 +30,38 @@ export const createProjects = async (req, res)=>{
 
 export const getOneProject = async (req, res)=>{
     try{
-        const singleProject = await Projects.findOne({_id : req.params.id});
-        if(singleProject){
-            res.status(201).json({singleProject});
+        const userClient = await pool.connect();
+
+        if(req.body.id){
+
+            userClient.query("SELECT * FROM Projects WHERE project_ID = $1",[req.body.id],(err, result)=>{
+                if(err){
+                    console.log("There was an error.");
+                    console.log(err);
+                    return res.status(501).json({msg:"Some error occured"});
+                } else{
+                    const dbRes = result.rows[0];
+                    return res.status(200).json({data:dbRes})
+                }
+            })
+
+        } else if(req.body.posted_by){
+
+            userClient.query("SELECT * FROM Projects WHERE posted_by = $1",[req.body.posted_by],(err, result)=>{
+                if(err){
+                    console.log("There was an error.");
+                    console.log(err);
+                    return res.status(501).json({msg:"Some error occured"});
+                } else{
+                    const dbRes = result.rows;
+                    return res.status(200).json({data:dbRes})
+                }
+            })
+
+        } else{
+            return res.status(401).json({msg:"Invalid Query"})
         }
-        else{
-            res.status(404).json({error: "Project not found"});
-        }
+        userClient.release();
     }
     catch(err){
         res.status(400).json({error: err});
@@ -45,13 +70,18 @@ export const getOneProject = async (req, res)=>{
 
 export const getAllProjects = async (req, res)=>{
     try{
-        const allProjects = await Projects.find();
-        if(allProjects){
-            res.status(200).send(allProjects);
-        }
-        else{
-            res.status(404).json({error: "No projects found :("});
-        }
+        const userClient = await pool.connect();
+        const {limit, page} = req.body
+        userClient.query("SELECT * FROM Projects LIMIT $1 OFFSET $2",[limit, (page-1)*limit],(err, result)=>{
+            if(err){
+                console.log("There was an error");
+                console.log(err)
+                return res.status(501).json({msg:"There was an error occured"})
+            } else{
+                const dbRes = result.rows;
+                return res.status(200).json({data:dbRes})
+            }
+        });
     }
     catch(err){
         res.status(400).json({error: err});

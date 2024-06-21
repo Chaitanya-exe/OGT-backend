@@ -5,7 +5,7 @@ import { verifyToken } from "../middleware/jwt.js";
 const router = express.Router();
 
 router.post('/create', verifyToken, createProjects);
-router.get('/getOneProject/:id', verifyToken, getOneProject);
+router.get('/getOneProject', verifyToken, getOneProject);
 router.get('/getAllProjects', getAllProjects);
 router.post('/updateProject/:id', verifyToken, updateProject);
 router.delete('/deleteProject/:id',verifyToken, deleteProject);
